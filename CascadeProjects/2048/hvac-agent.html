@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HVAC Troubleshooting Agent</title>
+    <link rel="stylesheet" href="hvac-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-tools"></i>
+                <h1>HVAC Diagnostic Agent</h1>
+            </div>
+            <div class="header-actions">
+                <button id="reference-btn" class="btn btn-secondary">
+                    <i class="fas fa-book"></i> Reference Library
+                </button>
+                <button id="reset-btn" class="btn btn-secondary">
+                    <i class="fas fa-refresh"></i> Reset
+                </button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Welcome Screen -->
+            <div id="welcome-screen" class="screen active">
+                <div class="welcome-content">
+                    <div class="welcome-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h2>Welcome to HVAC Troubleshooting</h2>
+                    <p>I'll help you diagnose and resolve HVAC issues step by step. Let's start by identifying your system type and the problem you're experiencing.</p>
+                    
+                    <div class="system-types">
+                        <h3>Select Your HVAC System Type:</h3>
+                        <div class="system-grid">
+                            <button class="system-card" data-system="central-air">
+                                <i class="fas fa-wind"></i>
+                                <span>Central Air</span>
+                            </button>
+                            <button class="system-card" data-system="heat-pump">
+                                <i class="fas fa-thermometer-half"></i>
+                                <span>Heat Pump</span>
+                            </button>
+                            <button class="system-card" data-system="furnace">
+                                <i class="fas fa-fire"></i>
+                                <span>Furnace</span>
+                            </button>
+                            <button class="system-card" data-system="boiler">
+                                <i class="fas fa-tint"></i>
+                                <span>Boiler</span>
+                            </button>
+                            <button class="system-card" data-system="window-unit">
+                                <i class="fas fa-square"></i>
+                                <span>Window Unit</span>
+                            </button>
+                            <button class="system-card" data-system="mini-split">
+                                <i class="fas fa-snowflake"></i>
+                                <span>Mini Split</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Problem Selection Screen -->
+            <div id="problem-screen" class="screen">
+                <div class="problem-content">
+                    <div class="breadcrumb">
+                        <span id="selected-system"></span> <i class="fas fa-chevron-right"></i> Problem Selection
+                    </div>
+                    
+                    <h2>What problem are you experiencing?</h2>
+                    <div class="problem-categories">
+                        <div class="category-card" data-category="cooling">
+                            <i class="fas fa-snowflake"></i>
+                            <h3>Cooling Issues</h3>
+                            <ul>
+                                <li>Not cooling</li>
+                                <li>Insufficient cooling</li>
+                                <li>Uneven temperatures</li>
+                                <li>Ice formation</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="category-card" data-category="heating">
+                            <i class="fas fa-fire"></i>
+                            <h3>Heating Issues</h3>
+                            <ul>
+                                <li>No heat</li>
+                                <li>Insufficient heat</li>
+                                <li>Uneven heating</li>
+                                <li>Strange odors</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="category-card" data-category="airflow">
+                            <i class="fas fa-wind"></i>
+                            <h3>Airflow Problems</h3>
+                            <ul>
+                                <li>No air movement</li>
+                                <li>Weak airflow</li>
+                                <li>Noisy operation</li>
+                                <li>Filter issues</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="category-card" data-category="electrical">
+                            <i class="fas fa-bolt"></i>
+                            <h3>Electrical Issues</h3>
+                            <ul>
+                                <li>Won't turn on</li>
+                                <li>Frequent cycling</li>
+                                <li>Thermostat problems</li>
+                                <li>Circuit breaker trips</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diagnostic Screen -->
+            <div id="diagnostic-screen" class="screen">
+                <div class="diagnostic-content">
+                    <div class="breadcrumb">
+                        <span id="diagnostic-system"></span> <i class="fas fa-chevron-right"></i> 
+                        <span id="diagnostic-category"></span> <i class="fas fa-chevron-right"></i> 
+                        Diagnosis
+                    </div>
+                    
+                    <div class="diagnostic-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <span class="progress-text">Step <span id="current-step">1</span> of <span id="total-steps">5</span></span>
+                    </div>
+                    
+                    <div class="diagnostic-step">
+                        <div class="step-icon">
+                            <i class="fas fa-search" id="step-icon"></i>
+                        </div>
+                        <h3 id="step-title">Initial Assessment</h3>
+                        <p id="step-description">Let's start with some basic checks...</p>
+                        
+                        <div class="step-content" id="step-content">
+                            <!-- Dynamic content will be inserted here -->
+                        </div>
+                        
+                        <div class="step-actions">
+                            <button id="prev-step" class="btn btn-secondary" disabled>
+                                <i class="fas fa-chevron-left"></i> Previous
+                            </button>
+                            <button id="next-step" class="btn btn-primary">
+                                Next <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="results-screen" class="screen">
+                <div class="results-content">
+                    <div class="results-header">
+                        <div class="results-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h2>Diagnosis Complete</h2>
+                    </div>
+                    
+                    <div class="diagnosis-summary">
+                        <h3>Likely Issue:</h3>
+                        <div class="issue-card" id="diagnosed-issue">
+                            <!-- Diagnosis result will be inserted here -->
+                        </div>
+                    </div>
+                    
+                    <div class="repair-steps">
+                        <h3>Recommended Actions:</h3>
+                        <div class="steps-list" id="repair-steps-list">
+                            <!-- Repair steps will be inserted here -->
+                        </div>
+                    </div>
+                    
+                    <div class="safety-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p><strong>Safety First:</strong> If you're not comfortable performing these repairs or if they involve electrical work, please contact a licensed HVAC professional.</p>
+                    </div>
+                    
+                    <div class="results-actions">
+                        <button id="start-over" class="btn btn-primary">
+                            <i class="fas fa-refresh"></i> Start New Diagnosis
+                        </button>
+                        <button id="print-results" class="btn btn-secondary">
+                            <i class="fas fa-print"></i> Print Results
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reference Library Screen -->
+            <div id="reference-screen" class="screen">
+                <div class="reference-content">
+                    <div class="reference-header">
+                        <div class="reference-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h2>Reference Library</h2>
+                        <p>Access manuals, guides, and technical documentation for troubleshooting support</p>
+                    </div>
+                    
+                    <div class="reference-categories">
+                        <div class="reference-category">
+                            <h3><i class="fas fa-file-pdf"></i> Equipment Manuals</h3>
+                            <div class="reference-grid">
+                                <div class="reference-item">
+                                    <div class="reference-card">
+                                        <i class="fas fa-wind"></i>
+                                        <h4>Central Air Systems</h4>
+                                        <p>Installation and service manuals for central air conditioning units</p>
+                                        <div class="reference-links">
+                                            <a href="#" class="ref-link" data-type="manual" data-system="central-air">
+                                                <i class="fas fa-download"></i> Download Manual
+                                            </a>
+                                            <a href="#" class="ref-link" data-type="wiring" data-system="central-air">
+                                                <i class="fas fa-sitemap"></i> Wiring Diagrams
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="reference-item">
+                                    <div class="reference-card">
+                                        <i class="fas fa-thermometer-half"></i>
+                                        <h4>Heat Pumps</h4>
+                                        <p>Service documentation for heat pump systems</p>
+                                        <div class="reference-links">
+                                            <a href="#" class="ref-link" data-type="manual" data-system="heat-pump">
+                                                <i class="fas fa-download"></i> Download Manual
+                                            </a>
+                                            <a href="#" class="ref-link" data-type="wiring" data-system="heat-pump">
+                                                <i class="fas fa-sitemap"></i> Wiring Diagrams
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="reference-item">
+                                    <div class="reference-card">
+                                        <i class="fas fa-fire"></i>
+                                        <h4>Furnaces</h4>
+                                        <p>Gas and electric furnace service manuals</p>
+                                        <div class="reference-links">
+                                            <a href="#" class="ref-link" data-type="manual" data-system="furnace">
+                                                <i class="fas fa-download"></i> Download Manual
+                                            </a>
+                                            <a href="#" class="ref-link" data-type="wiring" data-system="furnace">
+                                                <i class="fas fa-sitemap"></i> Wiring Diagrams
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="reference-item">
+                                    <div class="reference-card">
+                                        <i class="fas fa-tint"></i>
+                                        <h4>Boilers</h4>
+                                        <p>Boiler system installation and maintenance guides</p>
+                                        <div class="reference-links">
+                                            <a href="#" class="ref-link" data-type="manual" data-system="boiler">
+                                                <i class="fas fa-download"></i> Download Manual
+                                            </a>
+                                            <a href="#" class="ref-link" data-type="wiring" data-system="boiler">
+                                                <i class="fas fa-sitemap"></i> Wiring Diagrams
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="reference-category">
+                            <h3><i class="fas fa-tools"></i> Technical Guides</h3>
+                            <div class="reference-grid">
+                                <div class="reference-item">
+                                    <div class="reference-card">
+                                        <i class="fas fa-bolt"></i>
+                                        <h4>Electrical Troubleshooting</h4>
+                                        <p>Comprehensive guide to HVAC electrical systems</p>
+                                        <div class="reference-links">
+                                            <a href="#" class="ref-link" data-type="guide" data-topic="electrical">
+                                                <i class="fas fa-eye"></i> View Guide
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="reference-item">
+                                    <div class="reference-card">
+                                        <i class="fas fa-snowflake"></i>
+                                        <h4>Refrigeration Systems</h4>
+                                        <p>Refrigerant handling and system diagnostics</p>
+                                        <div class="reference-links">
+                                            <a href="#" class="ref-link" data-type="guide" data-topic="refrigeration">
+                                                <i class="fas fa-eye"></i> View Guide
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="reference-item">
+                                    <div class="reference-card">
+                                        <i class="fas fa-wrench"></i>
+                                        <h4>Repair Techniques</h4>
+                                        <p>Step-by-step component replacement procedures</p>
+                                        <div class="reference-links">
+                                            <a href="#" class="ref-link" data-type="guide" data-topic="repair">
+                                                <i class="fas fa-eye"></i> View Guide
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="reference-item">
+                                    <div class="reference-card">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <h4>Safety Protocols</h4>
+                                        <p>Essential safety procedures and protocols</p>
+                                        <div class="reference-links">
+                                            <a href="#" class="ref-link" data-type="guide" data-topic="safety">
+                                                <i class="fas fa-eye"></i> View Guide
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="reference-category">
+                            <h3><i class="fas fa-calendar-check"></i> Maintenance Resources</h3>
+                            <div class="reference-grid">
+                                <div class="reference-item">
+                                    <div class="reference-card">
+                                        <i class="fas fa-clipboard-list"></i>
+                                        <h4>Maintenance Schedules</h4>
+                                        <p>Preventive maintenance checklists and schedules</p>
+                                        <div class="reference-links">
+                                            <a href="#" class="ref-link" data-type="guide" data-topic="maintenance">
+                                                <i class="fas fa-eye"></i> View Schedules
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="reference-item">
+                                    <div class="reference-card">
+                                        <i class="fas fa-search"></i>
+                                        <h4>Troubleshooting Methodology</h4>
+                                        <p>Systematic approach to problem diagnosis</p>
+                                        <div class="reference-links">
+                                            <a href="#" class="ref-link" data-type="guide" data-topic="troubleshooting">
+                                                <i class="fas fa-eye"></i> View Guide
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="reference-item">
+                                    <div class="reference-card">
+                                        <i class="fas fa-book"></i>
+                                        <h4>Case Studies</h4>
+                                        <p>Real-world troubleshooting scenarios and solutions</p>
+                                        <div class="reference-links">
+                                            <a href="#" class="ref-link" data-type="guide" data-topic="case-studies">
+                                                <i class="fas fa-eye"></i> View Cases
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="reference-item">
+                                    <div class="reference-card">
+                                        <i class="fas fa-tools"></i>
+                                        <h4>Tools & Equipment</h4>
+                                        <p>Guide to HVAC tools and proper usage</p>
+                                        <div class="reference-links">
+                                            <a href="#" class="ref-link" data-type="guide" data-topic="tools">
+                                                <i class="fas fa-eye"></i> View Guide
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="reference-actions">
+                        <button id="close-reference" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Back to Diagnostic
+                        </button>
+                        <button id="upload-manual" class="btn btn-secondary">
+                            <i class="fas fa-upload"></i> Upload Manual
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reference Viewer Modal -->
+            <div id="reference-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="modal-title">Reference Document</h3>
+                        <button id="close-modal" class="close-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="modal-body">
+                        <!-- Reference content will be loaded here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button id="download-reference" class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                        <button id="print-reference" class="btn btn-secondary">
+                            <i class="fas fa-print"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="hvac-knowledge-base.js"></script>
+    <script src="hvac-agent.js"></script>
+</body>
+</html>

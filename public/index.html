@@ -19,6 +19,7 @@
         <ul>
           <li><a href="#" class="active" data-page="home">Home</a></li>
           <li><a href="#" data-page="knowledge-base">Knowledge Base</a></li>
+          <li><a href="#" data-page="reference-library">Reference Library</a></li>
           <li><a href="#" data-page="troubleshoot">Troubleshoot</a></li>
           <li><a href="#" data-page="history">History</a></li>
         </ul>
@@ -147,6 +148,110 @@
           <p class="no-history">Login to view your troubleshooting history.</p>
         </div>
       </section>
+
+      <!-- Reference Library Page -->
+      <section id="reference-library-page" class="page">
+        <h2>HVAC Reference Library</h2>
+        <p class="library-description">Access comprehensive HVAC manuals, technical guides, and maintenance resources.</p>
+        
+        <div class="reference-categories">
+          <div class="reference-category">
+            <div class="category-header">
+              <i class="fas fa-tools"></i>
+              <h3>Equipment Manuals</h3>
+            </div>
+            <div class="category-content">
+              <div class="reference-links">
+                <a href="#" class="reference-link" data-type="manual" data-content="furnace-manual">
+                  <i class="fas fa-fire"></i>
+                  <span>Furnace Installation & Service Manual</span>
+                </a>
+                <a href="#" class="reference-link" data-type="manual" data-content="ac-manual">
+                  <i class="fas fa-snowflake"></i>
+                  <span>Air Conditioner Service Manual</span>
+                </a>
+                <a href="#" class="reference-link" data-type="manual" data-content="heatpump-manual">
+                  <i class="fas fa-thermometer-half"></i>
+                  <span>Heat Pump Technical Manual</span>
+                </a>
+                <a href="#" class="reference-link" data-type="manual" data-content="boiler-manual">
+                  <i class="fas fa-burn"></i>
+                  <span>Boiler Operation Manual</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="reference-category">
+            <div class="category-header">
+              <i class="fas fa-book-open"></i>
+              <h3>Technical Guides</h3>
+            </div>
+            <div class="category-content">
+              <div class="reference-links">
+                <a href="#" class="reference-link" data-type="guide" data-content="refrigeration-guide">
+                  <i class="fas fa-atom"></i>
+                  <span>Refrigeration Cycle & Troubleshooting</span>
+                </a>
+                <a href="#" class="reference-link" data-type="guide" data-content="electrical-guide">
+                  <i class="fas fa-bolt"></i>
+                  <span>Electrical Systems & Wiring</span>
+                </a>
+                <a href="#" class="reference-link" data-type="guide" data-content="airflow-guide">
+                  <i class="fas fa-wind"></i>
+                  <span>Airflow & Ductwork Design</span>
+                </a>
+                <a href="#" class="reference-link" data-type="guide" data-content="safety-guide">
+                  <i class="fas fa-shield-alt"></i>
+                  <span>Safety Procedures & Protocols</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="reference-category">
+            <div class="category-header">
+              <i class="fas fa-clipboard-list"></i>
+              <h3>Maintenance Resources</h3>
+            </div>
+            <div class="category-content">
+              <div class="reference-links">
+                <a href="#" class="reference-link" data-type="maintenance" data-content="preventive-maintenance">
+                  <i class="fas fa-calendar-check"></i>
+                  <span>Preventive Maintenance Schedules</span>
+                </a>
+                <a href="#" class="reference-link" data-type="maintenance" data-content="filter-guide">
+                  <i class="fas fa-filter"></i>
+                  <span>Filter Selection & Replacement</span>
+                </a>
+                <a href="#" class="reference-link" data-type="maintenance" data-content="seasonal-prep">
+                  <i class="fas fa-leaf"></i>
+                  <span>Seasonal Preparation Checklists</span>
+                </a>
+                <a href="#" class="reference-link" data-type="maintenance" data-content="troubleshooting-charts">
+                  <i class="fas fa-chart-line"></i>
+                  <span>Quick Troubleshooting Charts</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reference-actions">
+          <button id="upload-reference" class="btn">
+            <i class="fas fa-upload"></i>
+            Upload Document
+          </button>
+          <button id="download-all" class="btn">
+            <i class="fas fa-download"></i>
+            Download All
+          </button>
+          <button id="print-library" class="btn">
+            <i class="fas fa-print"></i>
+            Print Library
+          </button>
+        </div>
+      </section>
     </main>
 
     <!-- Auth Modals -->
@@ -231,6 +336,34 @@
       </div>
     </div>
 
+    <!-- Reference Viewer Modal -->
+    <div id="reference-modal" class="modal hidden">
+      <div class="modal-content reference-modal-content">
+        <div class="modal-header">
+          <h3 id="reference-title">Reference Document</h3>
+          <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div id="reference-content">
+            <!-- Reference content will be loaded here -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="download-reference" class="btn">
+            <i class="fas fa-download"></i>
+            Download
+          </button>
+          <button id="print-reference" class="btn">
+            <i class="fas fa-print"></i>
+            Print
+          </button>
+          <button id="close-reference" class="btn btn-secondary">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
     <footer>
       <div class="footer-content">
         <p>&copy; 2024 HVAC Troubleshooting Assistant. All rights reserved.</p>
@@ -240,6 +373,7 @@
     </footer>
   </div>
 
+  <script src="js/hvac-knowledge-base.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/app.js"></script>
 </body>
