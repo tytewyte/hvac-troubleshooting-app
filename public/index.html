@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HVAC Troubleshooting Assistant</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <div class="logo">
+        <i class="fas fa-snowflake"></i>
+        <h1>HVAC Troubleshooting Assistant</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#" class="active" data-page="home">Home</a></li>
+          <li><a href="#" data-page="knowledge-base">Knowledge Base</a></li>
+          <li><a href="#" data-page="troubleshoot">Troubleshoot</a></li>
+          <li><a href="#" data-page="history">History</a></li>
+        </ul>
+      </nav>
+      <div class="user-menu">
+        <button id="login-btn" class="btn">Login</button>
+        <button id="register-btn" class="btn btn-primary">Register</button>
+        <div id="user-profile" class="hidden">
+          <span id="username">User</span>
+          <button id="logout-btn" class="btn">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Home Page -->
+      <section id="home-page" class="page active">
+        <div class="hero">
+          <h2>Expert HVAC Troubleshooting with AI Assistance</h2>
+          <p>Get help diagnosing and fixing your HVAC issues with our AI-powered assistant.</p>
+          <div class="safety-notice">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p><strong>Safety First:</strong> Our AI assistant provides guidance, but always prioritize safety. For complex issues involving electrical components, gas lines, or refrigerant, consult a certified HVAC professional.</p>
+          </div>
+          <button id="start-troubleshooting" class="btn btn-primary btn-large">Start Troubleshooting</button>
+        </div>
+
+        <div class="features">
+          <div class="feature-card">
+            <i class="fas fa-robot"></i>
+            <h3>AI-Powered Assistant</h3>
+            <p>Get intelligent troubleshooting help from our Gemma 3 12B AI assistant.</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Safety First</h3>
+            <p>Clear safety warnings and professional recommendations when needed.</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-book"></i>
+            <h3>Knowledge Base</h3>
+            <p>Access comprehensive HVAC information and maintenance guides.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Knowledge Base Page -->
+      <section id="knowledge-base-page" class="page">
+        <h2>HVAC Knowledge Base</h2>
+        <div class="kb-categories">
+          <!-- Categories will be loaded dynamically -->
+        </div>
+        <div class="kb-content">
+          <p>Select a category to view information.</p>
+        </div>
+      </section>
+
+      <!-- Troubleshooting Page -->
+      <section id="troubleshoot-page" class="page">
+        <h2>HVAC Troubleshooting</h2>
+        
+        <div class="safety-notice prominent">
+          <i class="fas fa-exclamation-triangle"></i>
+          <div>
+            <h3>Safety Warning</h3>
+            <p>Always prioritize safety when troubleshooting HVAC systems:</p>
+            <ul>
+              <li>Turn off power before inspecting components</li>
+              <li>Never handle refrigerant without proper certification</li>
+              <li>Do not attempt to repair gas components</li>
+              <li>If you smell gas, leave immediately and call your gas company</li>
+              <li>When in doubt, contact a certified HVAC professional</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="troubleshoot-form">
+          <div class="form-group">
+            <label for="system-type">System Type:</label>
+            <select id="system-type">
+              <option value="">Select System Type</option>
+              <option value="central-ac">Central Air Conditioner</option>
+              <option value="heat-pump">Heat Pump</option>
+              <option value="furnace">Furnace</option>
+              <option value="boiler">Boiler</option>
+              <option value="mini-split">Ductless Mini-Split</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="issue-description">Describe the Issue:</label>
+            <textarea id="issue-description" placeholder="Describe your HVAC problem in detail..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Symptoms (select all that apply):</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="symptom" value="no-power"> No Power</label>
+              <label><input type="checkbox" name="symptom" value="no-heat"> No Heat</label>
+              <label><input type="checkbox" name="symptom" value="no-cooling"> No Cooling</label>
+              <label><input type="checkbox" name="symptom" value="poor-airflow"> Poor Airflow</label>
+              <label><input type="checkbox" name="symptom" value="unusual-noise"> Unusual Noise</label>
+              <label><input type="checkbox" name="symptom" value="water-leakage"> Water Leakage</label>
+              <label><input type="checkbox" name="symptom" value="bad-smell"> Bad Smell</label>
+              <label><input type="checkbox" name="symptom" value="system-cycling"> System Cycling On/Off</label>
+            </div>
+          </div>
+
+          <button id="submit-issue" class="btn btn-primary">Get Troubleshooting Help</button>
+        </div>
+
+        <div id="ai-response" class="hidden">
+          <h3>Troubleshooting Assistance</h3>
+          <div class="response-content">
+            <!-- AI response will be displayed here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- History Page -->
+      <section id="history-page" class="page">
+        <h2>Your Troubleshooting History</h2>
+        <div class="history-list">
+          <!-- History items will be loaded dynamically -->
+          <p class="no-history">Login to view your troubleshooting history.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Auth Modals -->
+    <div id="login-modal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Login</h2>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email">Email:</label>
+            <input type="email" id="login-email" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password:</label>
+            <input type="password" id="login-password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="register-modal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Register</h2>
+        <form id="register-form">
+          <div class="form-group">
+            <label for="register-username">Username:</label>
+            <input type="text" id="register-username" required>
+          </div>
+          <div class="form-group">
+            <label for="register-email">Email:</label>
+            <input type="email" id="register-email" required>
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password:</label>
+            <input type="password" id="register-password" required>
+          </div>
+          <div class="form-group">
+            <label for="register-confirm-password">Confirm Password:</label>
+            <input type="password" id="register-confirm-password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedback-modal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Provide Feedback</h2>
+        <form id="feedback-form">
+          <div class="form-group">
+            <label for="feedback-name">Name (optional):</label>
+            <input type="text" id="feedback-name">
+          </div>
+          <div class="form-group">
+            <label for="feedback-email">Email (optional):</label>
+            <input type="email" id="feedback-email">
+          </div>
+          <div class="form-group">
+            <label for="feedback-type">Feedback Type:</label>
+            <select id="feedback-type" required>
+              <option value="">Select Type</option>
+              <option value="bug">Bug Report</option>
+              <option value="feature">Feature Request</option>
+              <option value="improvement">Improvement Suggestion</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="feedback-message">Your Feedback:</label>
+            <textarea id="feedback-message" required placeholder="Please share your thoughts, suggestions, or report issues..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit Feedback</button>
+        </form>
+        <div id="feedback-success" class="hidden">
+          <i class="fas fa-check-circle"></i>
+          <p>Thank you for your feedback! We appreciate your input.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-content">
+        <p>&copy; 2024 HVAC Troubleshooting Assistant. All rights reserved.</p>
+        <p class="disclaimer">This application provides guidance only. Always consult with a certified HVAC professional for serious issues.</p>
+        <button id="feedback-btn" class="btn">Provide Feedback</button>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
