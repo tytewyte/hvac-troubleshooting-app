@@ -1,14 +1,5 @@
 [build]
-nixpacks = true
-
-[build.nixpacksConfig]
-builder = "nodejs"
-
-[build.nixpacksConfig.variables]
-NODE_VERSION = "18"
-
-[build.nixpacksConfig.phases.setup]
-cmds = ["npm ci"]
+dockerfilePath = "Dockerfile"
 
 [deploy]
 startCommand = "npm start"
