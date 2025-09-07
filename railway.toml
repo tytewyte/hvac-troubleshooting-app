@@ -4,6 +4,12 @@ nixpacks = true
 [build.nixpacksConfig]
 builder = "nodejs"
 
+[build.nixpacksConfig.variables]
+NODE_VERSION = "18"
+
+[build.nixpacksConfig.phases.setup]
+cmds = ["npm ci"]
+
 [deploy]
 startCommand = "npm start"
 restartPolicyType = "ON_FAILURE"
