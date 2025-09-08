@@ -385,6 +385,24 @@ textarea {
   background-color: var(--secondary-color);
 }
 
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+}
+
 .btn-large {
   padding: 0.75rem 1.5rem;
   font-size: 1.1rem;
@@ -564,8 +582,317 @@ footer {
 
 /* Reference Modal Styles */
 .reference-modal-content {
-  max-width: 1000px;
+  max-width: 90%;
+  max-height: 90%;
+  width: 800px;
+}
+
+.reference-modal-content .modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+#reference-content {
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+#reference-content h1,
+#reference-content h2,
+#reference-content h3 {
+  color: var(--primary-color);
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+#reference-content ul,
+#reference-content ol {
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+#reference-content li {
+  margin-bottom: 5px;
+}
+
+#reference-content .warning {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px 0;
+  color: #856404;
+}
+
+#reference-content .note {
+  background: #d1ecf1;
+  border: 1px solid #bee5eb;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px 0;
+  color: #0c5460;
+}
+
+/* Upload Modal Styles */
+.file-upload-area {
+  position: relative;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+}
+
+.file-upload-area:hover {
+  border-color: var(--primary-color);
+}
+
+.file-upload-area.dragover {
+  border-color: var(--primary-color);
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.file-upload-info {
+  color: #666;
+}
+
+.file-upload-info i {
+  font-size: 48px;
+  color: #ddd;
+  margin-bottom: 10px;
+}
+
+.file-upload-info p {
+  margin: 5px 0;
+}
+
+.file-types {
+  font-size: 12px;
+  color: #999;
+}
+
+.file-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.file-preview i {
+  color: var(--primary-color);
+  font-size: 24px;
+}
+
+#manual-file {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Manual Management Styles */
+.large-modal {
+  max-width: 95%;
+  width: 1200px;
   max-height: 90vh;
+}
+
+.manual-management-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.search-controls {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+}
+
+.search-controls input,
+.search-controls select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.search-controls input {
+  flex: 1;
+  max-width: 300px;
+}
+
+.view-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.btn-small {
+  padding: 8px 12px;
+  font-size: 14px;
+  min-width: auto;
+}
+
+.btn-small.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.manuals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.manuals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.manual-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  background: white;
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.manual-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.manual-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.manual-icon {
+  font-size: 24px;
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.manual-info {
+  flex: 1;
+}
+
+.manual-title {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.manual-category {
+  font-size: 12px;
+  color: #666;
+  background: #f8f9fa;
+  padding: 2px 8px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.manual-description {
+  font-size: 14px;
+  color: #666;
+  margin: 10px 0;
+  line-height: 1.4;
+}
+
+.manual-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #999;
+  margin-top: 10px;
+}
+
+.manual-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.manual-actions .btn {
+  padding: 4px 8px;
+  font-size: 12px;
+  min-width: auto;
+}
+
+.no-content {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.no-content i {
+  font-size: 48px;
+  color: #ddd;
+  margin-bottom: 15px;
+}
+
+.no-content p {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+/* List view styles */
+.manual-list-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  transition: background-color 0.3s ease;
+}
+
+.manual-list-item:hover {
+  background-color: #f8f9fa;
+}
+
+.manual-list-icon {
+  font-size: 20px;
+  color: var(--primary-color);
+  margin-right: 15px;
+}
+
+.manual-list-info {
+  flex: 1;
+}
+
+.manual-list-title {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.manual-list-meta {
+  font-size: 12px;
+  color: #666;
+}
+
+.manual-list-actions {
+  display: flex;
+  gap: 5px;
 }
 
 .modal-header {

@@ -337,6 +337,7 @@
     </div>
 
     <!-- Reference Viewer Modal -->
+    <!-- Reference Modal -->
     <div id="reference-modal" class="modal hidden">
       <div class="modal-content reference-modal-content">
         <div class="modal-header">
@@ -358,6 +359,129 @@
             Print
           </button>
           <button id="close-reference" class="btn btn-secondary">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload Manual Modal -->
+    <div id="upload-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Upload Manual</h3>
+          <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+          <form id="upload-form" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="manual-title">Manual Title:</label>
+              <input type="text" id="manual-title" name="title" required placeholder="e.g., Carrier Furnace Service Manual">
+            </div>
+            
+            <div class="form-group">
+              <label for="manual-category">Category:</label>
+              <select id="manual-category" name="category" required>
+                <option value="">Select Category</option>
+                <option value="equipment-manuals">Equipment Manuals</option>
+                <option value="technical-guides">Technical Guides</option>
+                <option value="maintenance">Maintenance Resources</option>
+                <option value="safety">Safety Documents</option>
+                <option value="codes-standards">Codes & Standards</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="manual-subcategory">Subcategory:</label>
+              <input type="text" id="manual-subcategory" name="subcategory" placeholder="e.g., Furnaces, Heat Pumps, etc.">
+            </div>
+            
+            <div class="form-group">
+              <label for="manual-description">Description:</label>
+              <textarea id="manual-description" name="description" rows="3" placeholder="Brief description of the manual content"></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label for="manual-file">Select File:</label>
+              <div class="file-upload-area">
+                <input type="file" id="manual-file" name="file" accept=".pdf,.doc,.docx,.txt" required>
+                <div class="file-upload-info">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <p>Click to select file or drag and drop</p>
+                  <p class="file-types">Supported: PDF, DOC, DOCX, TXT (Max 10MB)</p>
+                </div>
+                <div id="file-preview" class="file-preview hidden">
+                  <i class="fas fa-file"></i>
+                  <span id="file-name"></span>
+                  <span id="file-size"></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="manual-public" name="public">
+                Make this manual publicly accessible
+              </label>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="upload-submit" class="btn btn-primary">
+            <i class="fas fa-upload"></i>
+            Upload Manual
+          </button>
+          <button type="button" id="upload-cancel" class="btn btn-secondary">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manual Management Modal -->
+    <div id="manage-manuals-modal" class="modal hidden">
+      <div class="modal-content large-modal">
+        <div class="modal-header">
+          <h3>Manage Manuals</h3>
+          <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div class="manual-management-controls">
+            <div class="search-controls">
+              <input type="text" id="manual-search" placeholder="Search manuals...">
+              <select id="category-filter">
+                <option value="">All Categories</option>
+                <option value="equipment-manuals">Equipment Manuals</option>
+                <option value="technical-guides">Technical Guides</option>
+                <option value="maintenance">Maintenance Resources</option>
+                <option value="safety">Safety Documents</option>
+                <option value="codes-standards">Codes & Standards</option>
+              </select>
+            </div>
+            <div class="view-controls">
+              <button id="grid-view" class="btn btn-small active">
+                <i class="fas fa-th"></i>
+              </button>
+              <button id="list-view" class="btn btn-small">
+                <i class="fas fa-list"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div id="manuals-container" class="manuals-grid">
+            <!-- Uploaded manuals will be displayed here -->
+          </div>
+          
+          <div id="no-manuals" class="no-content hidden">
+            <i class="fas fa-folder-open"></i>
+            <p>No manuals uploaded yet</p>
+            <button class="btn btn-primary" onclick="document.getElementById('upload-modal').style.display = 'block'">
+              Upload Your First Manual
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="close-manage" class="btn btn-secondary">
             Close
           </button>
         </div>

@@ -19,12 +19,26 @@ const modalCloseButtons = document.querySelectorAll('.modal .close');
 const referenceModal = document.getElementById('reference-modal');
 const referenceTitle = document.getElementById('reference-title');
 const referenceContent = document.getElementById('reference-content');
+const uploadModal = document.getElementById('upload-modal');
+const manageManualsModal = document.getElementById('manage-manuals-modal');
 const uploadReferenceBtn = document.getElementById('upload-reference');
 const downloadAllBtn = document.getElementById('download-all');
 const printLibraryBtn = document.getElementById('print-library');
 const downloadReferenceBtn = document.getElementById('download-reference');
 const printReferenceBtn = document.getElementById('print-reference');
 const closeReferenceBtn = document.getElementById('close-reference');
+const uploadSubmitBtn = document.getElementById('upload-submit');
+const uploadCancelBtn = document.getElementById('upload-cancel');
+const closeManualsBtn = document.getElementById('close-manage');
+const manualFileInput = document.getElementById('manual-file');
+const filePreview = document.getElementById('file-preview');
+const fileUploadArea = document.querySelector('.file-upload-area');
+const gridViewBtn = document.getElementById('grid-view');
+const listViewBtn = document.getElementById('list-view');
+const manualSearch = document.getElementById('manual-search');
+const categoryFilter = document.getElementById('category-filter');
+const manualsContainer = document.getElementById('manuals-container');
+const noManualsDiv = document.getElementById('no-manuals');
 
 // Navigation
 navLinks.forEach(link => {
@@ -426,15 +440,283 @@ if (feedbackBtn) {
   });
 }
 
+// File Upload Functionality
+if (manualFileInput) {
+  manualFileInput.addEventListener('change', handleFileSelect);
+}
+
+if (fileUploadArea) {
+  fileUploadArea.addEventListener('dragover', handleDragOver);
+  fileUploadArea.addEventListener('dragleave', handleDragLeave);
+  fileUploadArea.addEventListener('drop', handleFileDrop);
+}
+
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (file) {
+    displayFilePreview(file);
+  }
+}
+
+function handleDragOver(e) {
+  e.preventDefault();
+  fileUploadArea.classList.add('dragover');
+}
+
+function handleDragLeave(e) {
+  e.preventDefault();
+  fileUploadArea.classList.remove('dragover');
+}
+
+function handleFileDrop(e) {
+  e.preventDefault();
+  fileUploadArea.classList.remove('dragover');
+  
+  const files = e.dataTransfer.files;
+  if (files.length > 0) {
+    manualFileInput.files = files;
+    displayFilePreview(files[0]);
+  }
+}
+
+function displayFilePreview(file) {
+  const fileName = document.getElementById('file-name');
+  const fileSize = document.getElementById('file-size');
+  const fileInfo = document.querySelector('.file-upload-info');
+  
+  if (fileName && fileSize) {
+    fileName.textContent = file.name;
+    fileSize.textContent = formatFileSize(file.size);
+    filePreview.classList.remove('hidden');
+    fileInfo.style.display = 'none';
+  }
+}
+
+function formatFileSize(bytes) {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// Upload Modal Event Listeners
+if (uploadSubmitBtn) {
+  uploadSubmitBtn.addEventListener('click', handleManualUpload);
+}
+
+if (uploadCancelBtn) {
+  uploadCancelBtn.addEventListener('click', () => {
+    uploadModal.style.display = 'none';
+    resetUploadForm();
+  });
+}
+
+function handleManualUpload() {
+  const form = document.getElementById('upload-form');
+  const formData = new FormData(form);
+  
+  const title = formData.get('title');
+  const category = formData.get('category');
+  const subcategory = formData.get('subcategory') || '';
+  const description = formData.get('description') || '';
+  const isPublic = formData.get('public') === 'on';
+  const file = manualFileInput.files[0];
+  
+  if (!title || !category || !file) {
+    alert('Please fill in all required fields and select a file.');
+    return;
+  }
+  
+  if (file.size > 10 * 1024 * 1024) { // 10MB limit
+    alert('File size must be less than 10MB.');
+    return;
+  }
+  
+  // Convert file to base64 for storage
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const manual = {
+      title,
+      category,
+      subcategory,
+      description,
+      isPublic,
+      fileName: file.name,
+      fileSize: file.size,
+      fileType: file.type,
+      fileData: e.target.result
+    };
+    
+    manualStorage.addManual(manual);
+    uploadModal.style.display = 'none';
+    resetUploadForm();
+    alert('Manual uploaded successfully!');
+  };
+  
+  reader.readAsDataURL(file);
+}
+
+function resetUploadForm() {
+  document.getElementById('upload-form').reset();
+  filePreview.classList.add('hidden');
+  document.querySelector('.file-upload-info').style.display = 'block';
+}
+
+// Manual Management Event Listeners
+if (closeManualsBtn) {
+  closeManualsBtn.addEventListener('click', () => {
+    manageManualsModal.style.display = 'none';
+  });
+}
+
+if (gridViewBtn && listViewBtn) {
+  gridViewBtn.addEventListener('click', () => {
+    gridViewBtn.classList.add('active');
+    listViewBtn.classList.remove('active');
+    manualsContainer.className = 'manuals-grid';
+    displayManuals();
+  });
+  
+  listViewBtn.addEventListener('click', () => {
+    listViewBtn.classList.add('active');
+    gridViewBtn.classList.remove('active');
+    manualsContainer.className = 'manuals-list';
+    displayManuals();
+  });
+}
+
+if (manualSearch) {
+  manualSearch.addEventListener('input', displayManuals);
+}
+
+if (categoryFilter) {
+  categoryFilter.addEventListener('change', displayManuals);
+}
+
+function displayManuals() {
+  const search = manualSearch ? manualSearch.value : '';
+  const category = categoryFilter ? categoryFilter.value : '';
+  const manuals = manualStorage.getManuals(category, search);
+  const isGridView = manualsContainer.classList.contains('manuals-grid');
+  
+  if (manuals.length === 0) {
+    manualsContainer.style.display = 'none';
+    noManualsDiv.classList.remove('hidden');
+    return;
+  }
+  
+  manualsContainer.style.display = isGridView ? 'grid' : 'flex';
+  noManualsDiv.classList.add('hidden');
+  
+  manualsContainer.innerHTML = manuals.map(manual => 
+    isGridView ? createManualCard(manual) : createManualListItem(manual)
+  ).join('');
+}
+
+function createManualCard(manual) {
+  const uploadDate = new Date(manual.uploadDate).toLocaleDateString();
+  return `
+    <div class="manual-card" data-id="${manual.id}">
+      <div class="manual-card-header">
+        <i class="fas fa-file-pdf manual-icon"></i>
+        <div class="manual-info">
+          <div class="manual-title">${manual.title}</div>
+          <span class="manual-category">${manual.category.replace('-', ' ')}</span>
+        </div>
+      </div>
+      <div class="manual-description">${manual.description}</div>
+      <div class="manual-meta">
+        <span>Uploaded: ${uploadDate}</span>
+        <div class="manual-actions">
+          <button class="btn btn-small" onclick="downloadManual('${manual.id}')">
+            <i class="fas fa-download"></i>
+          </button>
+          <button class="btn btn-small" onclick="viewManual('${manual.id}')">
+            <i class="fas fa-eye"></i>
+          </button>
+          <button class="btn btn-small btn-danger" onclick="deleteManual('${manual.id}')">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function createManualListItem(manual) {
+  const uploadDate = new Date(manual.uploadDate).toLocaleDateString();
+  return `
+    <div class="manual-list-item" data-id="${manual.id}">
+      <i class="fas fa-file-pdf manual-list-icon"></i>
+      <div class="manual-list-info">
+        <div class="manual-list-title">${manual.title}</div>
+        <div class="manual-list-meta">
+          ${manual.category.replace('-', ' ')} • ${uploadDate} • ${formatFileSize(manual.fileSize)}
+        </div>
+      </div>
+      <div class="manual-list-actions">
+        <button class="btn btn-small" onclick="downloadManual('${manual.id}')">
+          <i class="fas fa-download"></i>
+        </button>
+        <button class="btn btn-small" onclick="viewManual('${manual.id}')">
+          <i class="fas fa-eye"></i>
+        </button>
+        <button class="btn btn-small btn-danger" onclick="deleteManual('${manual.id}')">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// Manual Actions
+function downloadManual(id) {
+  const manual = manualStorage.manuals.find(m => m.id === id);
+  if (manual) {
+    const link = document.createElement('a');
+    link.href = manual.fileData;
+    link.download = manual.fileName;
+    link.click();
+  }
+}
+
+function viewManual(id) {
+  const manual = manualStorage.manuals.find(m => m.id === id);
+  if (manual) {
+    if (manual.fileType === 'application/pdf') {
+      window.open(manual.fileData, '_blank');
+    } else {
+      downloadManual(id);
+    }
+  }
+}
+
+function deleteManual(id) {
+  if (confirm('Are you sure you want to delete this manual?')) {
+    manualStorage.deleteManual(id);
+    displayManuals();
+  }
+}
+
 modalCloseButtons.forEach(button => {
   button.addEventListener('click', () => {
-    button.closest('.modal').style.display = 'none';
+    const modal = button.closest('.modal');
+    if (modal) {
+      modal.style.display = 'none';
+      if (modal === uploadModal) {
+        resetUploadForm();
+      }
+    }
   });
 });
 
 document.addEventListener('click', (e) => {
   if (e.target.classList.contains('modal')) {
     e.target.style.display = 'none';
+    if (e.target === uploadModal) {
+      resetUploadForm();
+    }
   }
 });
 
@@ -477,6 +759,66 @@ if (feedbackForm) {
   });
 }
 
+// Manual Storage System
+class ManualStorage {
+  constructor() {
+    this.storageKey = 'hvac_manuals';
+    this.manuals = this.loadManuals();
+  }
+
+  loadManuals() {
+    try {
+      const stored = localStorage.getItem(this.storageKey);
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.error('Error loading manuals:', error);
+      return [];
+    }
+  }
+
+  saveManuals() {
+    try {
+      localStorage.setItem(this.storageKey, JSON.stringify(this.manuals));
+    } catch (error) {
+      console.error('Error saving manuals:', error);
+    }
+  }
+
+  addManual(manual) {
+    manual.id = Date.now().toString();
+    manual.uploadDate = new Date().toISOString();
+    this.manuals.push(manual);
+    this.saveManuals();
+    return manual;
+  }
+
+  deleteManual(id) {
+    this.manuals = this.manuals.filter(manual => manual.id !== id);
+    this.saveManuals();
+  }
+
+  getManuals(category = '', search = '') {
+    let filtered = this.manuals;
+    
+    if (category) {
+      filtered = filtered.filter(manual => manual.category === category);
+    }
+    
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filtered = filtered.filter(manual => 
+        manual.title.toLowerCase().includes(searchLower) ||
+        manual.description.toLowerCase().includes(searchLower) ||
+        manual.subcategory.toLowerCase().includes(searchLower)
+      );
+    }
+    
+    return filtered;
+  }
+}
+
+const manualStorage = new ManualStorage();
+
 // Reference Library Event Listeners
 document.addEventListener('click', (e) => {
   if (e.target.classList.contains('reference-link')) {
@@ -489,28 +831,21 @@ document.addEventListener('click', (e) => {
 
 if (uploadReferenceBtn) {
   uploadReferenceBtn.addEventListener('click', () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.pdf,.doc,.docx,.txt';
-    input.onchange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        alert(`File "${file.name}" uploaded successfully to reference library.`);
-      }
-    };
-    input.click();
+    uploadModal.style.display = 'block';
   });
 }
 
 if (downloadAllBtn) {
   downloadAllBtn.addEventListener('click', () => {
-    alert('Downloading all reference documents...');
+    manageManualsModal.style.display = 'block';
+    displayManuals();
   });
 }
 
 if (printLibraryBtn) {
   printLibraryBtn.addEventListener('click', () => {
-    window.print();
+    manageManualsModal.style.display = 'block';
+    displayManuals();
   });
 }
 
