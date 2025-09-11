@@ -1,16 +1,18 @@
-// Mock user storage (in production, use a database)
-let users = []
+const connectToDatabase = require('../../utils/db');
+const User = require('../../models/User');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 exports.handler = async (event, context) => {
   // Handle CORS
   const headers = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Allow-Methods': 'POST, OPTIONS'
-  }
+  };
 
   if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers, body: '' }
+    return { statusCode: 200, headers, body: '' };
   }
 
   if (event.httpMethod !== 'POST') {
@@ -18,24 +20,45 @@ exports.handler = async (event, context) => {
       statusCode: 405,
       headers,
       body: JSON.stringify({ message: 'Method not allowed' })
-    }
+    };
   }
 
   try {
-    const { email, password } = JSON.parse(event.body)
+    await connectToDatabase();
+
+    const { email, password } = JSON.parse(event.body || '{}');
+
+    if (!email || !password) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ message: 'Missing email or password' })
+      };
+    }
 
     // Find user
-    const user = users.find(u => u.email === email && u.password === password)
+    const user = await User.findOne({ email });
     if (!user) {
       return {
         statusCode: 401,
         headers,
         body: JSON.stringify({ message: 'Invalid credentials' })
-      }
+      };
     }
 
-    // Generate mock token
-    const token = `token_${user.id}_${Date.now()}`
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return {
+        statusCode: 401,
+        headers,
+        body: JSON.stringify({ message: 'Invalid credentials' })
+      };
+    }
+
+    // Generate JWT
+    const payload = { userId: user.id };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     return {
       statusCode: 200,
@@ -44,12 +67,13 @@ exports.handler = async (event, context) => {
         token,
         user: { id: user.id, username: user.username, email: user.email }
       })
-    }
+    };
   } catch (error) {
+    console.error('Login Error:', error);
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ message: 'Server error' })
-    }
+      body: JSON.stringify({ message: 'Server error during login' })
+    };
   }
-}
+};

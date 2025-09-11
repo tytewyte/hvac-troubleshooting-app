@@ -13,8 +13,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # Uploads and large files
-uploads/
-*.pdf
+# Ignore content of uploads directory, but not the directory itself or .gitkeep
+uploads/*
+!uploads/.gitkeep
 *.zip
 *.tar.gz
 *.pid
