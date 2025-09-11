@@ -5,11 +5,13 @@ const loginBtn = document.getElementById('login-btn');
 const registerBtn = document.getElementById('register-btn');
 const logoutBtn = document.getElementById('logout-btn');
 const userProfile = document.getElementById('user-profile');
-const usernameDisplay = document.getElementById('username');
+const usernameDisplay = document.getElementById('username-display');
+
 const loginModal = document.getElementById('login-modal');
 const registerModal = document.getElementById('register-modal');
 const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
+
 const closeButtons = document.querySelectorAll('.close');
 
 // Auth State
@@ -20,23 +22,26 @@ let currentUser = JSON.parse(localStorage.getItem('user'));
 function checkAuthState() {
   if (authToken && currentUser) {
     // User is logged in
-    loginBtn.classList.add('hidden');
-    registerBtn.classList.add('hidden');
-    userProfile.classList.remove('hidden');
-    usernameDisplay.textContent = currentUser.username;
+    if (loginBtn) loginBtn.classList.add('hidden');
+    if (registerBtn) registerBtn.classList.add('hidden');
+    if (userProfile) userProfile.classList.remove('hidden');
+    if (usernameDisplay) usernameDisplay.textContent = currentUser.username;
     
     // Update history page
-    document.querySelector('.no-history').classList.add('hidden');
+    const noHistory = document.querySelector('.no-history');
+    if (noHistory) noHistory.classList.add('hidden');
     loadUserHistory();
   } else {
     // User is not logged in
-    loginBtn.classList.remove('hidden');
-    registerBtn.classList.remove('hidden');
-    userProfile.classList.add('hidden');
+    if (loginBtn) loginBtn.classList.remove('hidden');
+    if (registerBtn) registerBtn.classList.remove('hidden');
+    if (userProfile) userProfile.classList.add('hidden');
     
     // Update history page
-    document.querySelector('.no-history').classList.remove('hidden');
-    document.querySelector('.history-list').innerHTML = '<p class="no-history">Login to view your troubleshooting history.</p>';
+    const noHistory = document.querySelector('.no-history');
+    const historyList = document.querySelector('.history-list');
+    if (noHistory) noHistory.classList.remove('hidden');
+    if (historyList) historyList.innerHTML = '<p class="no-history">Login to view your troubleshooting history.</p>';
   }
 }
 
@@ -57,32 +62,15 @@ async function loadUserHistory() {
       // Display history if available
       const historyList = document.querySelector('.history-list');
       
-      if (userData.troubleshootingHistory && userData.troubleshootingHistory.length > 0) {
-        historyList.innerHTML = '';
-        
-        userData.troubleshootingHistory.forEach(item => {
-          const historyItem = document.createElement('div');
-          historyItem.className = 'history-item';
-          
-          const date = new Date(item.timestamp);
-          const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-          
-          historyItem.innerHTML = `
-            <div class="history-item-header">
-              <h3>${item.systemType || 'HVAC System'}</h3>
-              <span class="history-date">${formattedDate}</span>
-            </div>
-            <p><strong>Issue:</strong> ${item.issue}</p>
-            ${item.symptoms && item.symptoms.length > 0 ? 
-              `<p><strong>Symptoms:</strong> ${item.symptoms.join(', ')}</p>` : ''}
-            <div class="response-content">
-              <strong>AI Response:</strong>
-              <p>${item.aiResponse}</p>
-            </div>
-          `;
-          
-          historyList.appendChild(historyItem);
-        });
+      if (userData.history && userData.history.length > 0) {
+        historyList.innerHTML = userData.history.map(item => `
+          <div class="history-item">
+            <div class="history-date">${new Date(item.date).toLocaleDateString()}</div>
+            <div class="history-system">${item.systemType}</div>
+            <div class="history-issue">${item.issue}</div>
+            <div class="history-solution">${item.solution}</div>
+          </div>
+        `).join('');
       } else {
         historyList.innerHTML = '<p>No troubleshooting history found.</p>';
       }
@@ -93,147 +81,141 @@ async function loadUserHistory() {
 }
 
 // Event Listeners
-loginBtn.addEventListener('click', () => {
-  loginModal.classList.remove('hidden');
-});
+if (loginBtn) {
+  loginBtn.addEventListener('click', () => {
+    if (loginModal) loginModal.style.display = 'block';
+  });
+}
 
-registerBtn.addEventListener('click', () => {
-  registerModal.classList.remove('hidden');
-});
+if (registerBtn) {
+  registerBtn.addEventListener('click', () => {
+    if (registerModal) registerModal.style.display = 'block';
+  });
+}
 
-logoutBtn.addEventListener('click', () => {
-  // Clear auth data
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  authToken = null;
-  currentUser = null;
-  
-  // Update UI
-  checkAuthState();
-});
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    // Clear auth data
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    authToken = null;
+    currentUser = null;
+    
+    // Update UI
+    checkAuthState();
+  });
+}
 
 closeButtons.forEach(button => {
   button.addEventListener('click', () => {
-    loginModal.classList.add('hidden');
-    registerModal.classList.add('hidden');
+    if (loginModal) loginModal.style.display = 'none';
+    if (registerModal) registerModal.style.display = 'none';
   });
 });
 
 // Close modal when clicking outside
 window.addEventListener('click', (e) => {
   if (e.target === loginModal) {
-    loginModal.classList.add('hidden');
+    loginModal.style.display = 'none';
   }
   if (e.target === registerModal) {
-    registerModal.classList.add('hidden');
+    registerModal.style.display = 'none';
   }
 });
 
 // Login Form Submission
-loginForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  
-  const email = document.getElementById('login-email').value;
-  const password = document.getElementById('login-password').value;
-  
-  try {
-    const response = await fetch('/.netlify/functions/auth-login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    });
+if (loginForm) {
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
     
-    const data = await response.json();
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
     
-    if (response.ok) {
-      // Store auth token
-      localStorage.setItem('token', data.token);
-      authToken = data.token;
-      
-      // Get user data
-      const userResponse = await fetch('/auth/me', {
+    try {
+      const response = await fetch('/.netlify/functions/auth-login', {
+        method: 'POST',
         headers: {
-          'x-auth-token': authToken
-        }
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
       });
       
-      if (userResponse.ok) {
-        const userData = await userResponse.json();
-        localStorage.setItem('user', JSON.stringify(userData));
-        currentUser = userData;
+      const data = await response.json();
+      
+      if (response.ok) {
+        // Store auth token
+        localStorage.setItem('token', data.token);
+        authToken = data.token;
+        
+        // Store user data directly from login response
+        localStorage.setItem('user', JSON.stringify(data.user));
+        currentUser = data.user;
         
         // Update UI
         checkAuthState();
-        loginModal.classList.add('hidden');
+        if (loginModal) loginModal.style.display = 'none';
         loginForm.reset();
+        alert('Login successful!');
+      } else {
+        alert(data.message || 'Login failed');
       }
-    } else {
-      alert(data.message || 'Login failed');
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('Login failed. Please try again.');
     }
-  } catch (error) {
-    console.error('Login error:', error);
-    alert('Login failed. Please try again.');
-  }
-});
+  });
+}
 
 // Register Form Submission
-registerForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  
-  const username = document.getElementById('register-username').value;
-  const email = document.getElementById('register-email').value;
-  const password = document.getElementById('register-password').value;
-  const confirmPassword = document.getElementById('register-confirm-password').value;
-  
-  // Validate passwords match
-  if (password !== confirmPassword) {
-    alert('Passwords do not match');
-    return;
-  }
-  
-  try {
-    const response = await fetch('/.netlify/functions/auth-register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ username, email, password })
-    });
+if (registerForm) {
+  registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
     
-    const data = await response.json();
+    const username = document.getElementById('register-username').value;
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+    const confirmPassword = document.getElementById('register-confirm-password').value;
     
-    if (response.ok) {
-      // Store auth token
-      localStorage.setItem('token', data.token);
-      authToken = data.token;
-      
-      // Get user data
-      const userResponse = await fetch('/auth/me', {
+    // Validate passwords match
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    
+    try {
+      const response = await fetch('/.netlify/functions/auth-register', {
+        method: 'POST',
         headers: {
-          'x-auth-token': authToken
-        }
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, email, password })
       });
       
-      if (userResponse.ok) {
-        const userData = await userResponse.json();
-        localStorage.setItem('user', JSON.stringify(userData));
-        currentUser = userData;
+      const data = await response.json();
+      
+      if (response.ok) {
+        // Store auth token
+        localStorage.setItem('token', data.token);
+        authToken = data.token;
+        
+        // Store user data directly from registration response
+        localStorage.setItem('user', JSON.stringify(data.user));
+        currentUser = data.user;
         
         // Update UI
         checkAuthState();
-        registerModal.classList.add('hidden');
+        if (registerModal) registerModal.style.display = 'none';
         registerForm.reset();
+        alert('Registration successful!');
+      } else {
+        alert(data.message || 'Registration failed');
       }
-    } else {
-      alert(data.message || 'Registration failed');
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert('Registration failed. Please try again.');
     }
-  } catch (error) {
-    console.error('Registration error:', error);
-    alert('Registration failed. Please try again.');
-  }
-});
+  });
+}
 
 // Initialize auth state
 document.addEventListener('DOMContentLoaded', checkAuthState);
