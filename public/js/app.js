@@ -1,10 +1,10 @@
-// Initialize ManualStorage
-const manualStorage = new ManualStorage();
-
 // Browser compatibility check
 if (typeof Promise === 'undefined' || typeof fetch === 'undefined') {
   alert('Your browser does not support modern JavaScript features. Please update your browser for the best experience.');
 }
+
+// Initialize ManualStorage
+let manualStorage;
 
 // --- Troubleshooting Flows ---
 async function loadTroubleshootingFlows() {
@@ -380,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
     submitIssueBtn.addEventListener('click', async () => {
       const systemType = document.getElementById('system-type')?.value;
       const issueDescription = document.getElementById('issue-description')?.value;
-      const symptoms = Array.from(document.querySelectorAll('input[name="symptoms"]:checked')).map(cb => cb.value);
+      const symptoms = Array.from(document.querySelectorAll('input[name="symptom"]:checked')).map(cb => cb.value);
       
       if (!systemType || !issueDescription) {
         alert('Please fill in all required fields.');
@@ -913,48 +913,99 @@ document.addEventListener('DOMContentLoaded', () => {
     return filtered;
   };
 
-  // Initialize Application
-  document.addEventListener('DOMContentLoaded', () => {
-    // Load knowledge base
-    loadKnowledgeBase();
-    // Load uploaded manuals
-    loadUploadedManuals();
-    // Display manuals initially
-    displayManuals();
+  // Initialize ManualStorage
+  manualStorage = new ManualStorage();
+  
+  // Load knowledge base
+  loadKnowledgeBase();
+  
+  // Display manuals initially
+  displayManuals();
 
-    // Debug logs
-    console.log('App initialized.');
-  });
+  // Debug logs
+  console.log('App initialized.');
 });
 
-// Reference Library Event Listeners
-document.addEventListener('click', (e) => {
-  if (e.target.classList.contains('reference-link')) {
-    e.preventDefault();
-    const contentType = e.target.getAttribute('data-content');
-    const type = e.target.getAttribute('data-type');
-    openReference(contentType, type);
+// Manual Storage System
+function ManualStorage() {
+  this.storageKey = 'hvac_manuals';
+  this.manuals = this.loadManuals();
+}
+
+ManualStorage.prototype.loadManuals = function() {
+  try {
+    var stored = localStorage.getItem(this.storageKey);
+    return stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.error('Error loading manuals:', error);
+    return [];
   }
-});
+};
 
-if (uploadReferenceBtn) {
-  uploadReferenceBtn.addEventListener('click', () => {
-    uploadModal.style.display = 'block';
-  });
+ManualStorage.prototype.saveManuals = function() {
+  try {
+    localStorage.setItem(this.storageKey, JSON.stringify(this.manuals));
+  } catch (error) {
+    console.error('Error saving manuals:', error);
+  }
+};
+
+ManualStorage.prototype.addManual = function(manual) {
+  manual.id = Date.now().toString();
+  manual.uploadDate = new Date().toISOString();
+  this.manuals.push(manual);
+  this.saveManuals();
+  return manual.id;
+};
+
+ManualStorage.prototype.deleteManual = function(id) {
+  this.manuals = this.manuals.filter(function(manual) { return manual.id !== id; });
+  this.saveManuals();
+};
+
+ManualStorage.prototype.getManuals = function(category, search) {
+  category = category || '';
+  search = search || '';
+  var filtered = this.manuals;
+  
+  if (category && category !== 'all') {
+    filtered = filtered.filter(function(manual) {
+      return manual.category.toLowerCase() === category.toLowerCase();
+    });
+  }
+  
+  if (search) {
+    var searchLower = search.toLowerCase();
+    filtered = filtered.filter(function(manual) {
+      return manual.title.toLowerCase().indexOf(searchLower) !== -1 ||
+             manual.description.toLowerCase().indexOf(searchLower) !== -1 ||
+             manual.category.toLowerCase().indexOf(searchLower) !== -1;
+    });
+  }
+  
+  return filtered;
+};
+
+// Global functions for manual actions
+function downloadManual(id) {
+  const manual = manualStorage.manuals.find(m => m.id === id);
+  if (manual && manual.url) {
+    window.open(manual.url, '_blank');
+  }
 }
 
-if (downloadAllBtn) {
-  downloadAllBtn.addEventListener('click', () => {
-    manageManualsModal.style.display = 'block';
-    displayManuals();
-  });
+function viewManual(id) {
+  const manual = manualStorage.manuals.find(m => m.id === id);
+  if (manual && manual.url) {
+    window.open(manual.url, '_blank');
+  }
 }
 
-if (printLibraryBtn) {
-  printLibraryBtn.addEventListener('click', () => {
-    manageManualsModal.style.display = 'block';
+function deleteManual(id) {
+  if (confirm('Are you sure you want to delete this manual?')) {
+    manualStorage.deleteManual(id);
     displayManuals();
-  });
+  }
 }
 
 
