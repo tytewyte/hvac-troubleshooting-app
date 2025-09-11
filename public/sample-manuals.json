@@ -1,0 +1,80 @@
+[
+  {
+    "id": "1",
+    "title": "Carrier Furnace Installation Manual",
+    "category": "equipment-manuals",
+    "subcategory": "Furnaces",
+    "description": "Complete installation and service manual for Carrier gas furnaces",
+    "fileName": "carrier-furnace-manual.pdf",
+    "fileSize": 2500000,
+    "fileType": "application/pdf",
+    "url": "#",
+    "uploadDate": "2024-01-15T10:00:00Z",
+    "isPublic": true
+  },
+  {
+    "id": "2",
+    "title": "Trane Heat Pump Service Guide",
+    "category": "equipment-manuals",
+    "subcategory": "Heat Pumps",
+    "description": "Comprehensive service and troubleshooting guide for Trane heat pump systems",
+    "fileName": "trane-heatpump-service.pdf",
+    "fileSize": 3200000,
+    "fileType": "application/pdf",
+    "url": "#",
+    "uploadDate": "2024-01-20T14:30:00Z",
+    "isPublic": true
+  },
+  {
+    "id": "3",
+    "title": "HVAC Electrical Troubleshooting Guide",
+    "category": "technical-guides",
+    "subcategory": "Electrical",
+    "description": "Step-by-step electrical troubleshooting procedures for HVAC systems",
+    "fileName": "hvac-electrical-guide.pdf",
+    "fileSize": 1800000,
+    "fileType": "application/pdf",
+    "url": "#",
+    "uploadDate": "2024-02-01T09:15:00Z",
+    "isPublic": true
+  },
+  {
+    "id": "4",
+    "title": "Refrigeration Cycle Fundamentals",
+    "category": "technical-guides",
+    "subcategory": "Refrigeration",
+    "description": "Understanding refrigeration cycles, components, and troubleshooting",
+    "fileName": "refrigeration-fundamentals.pdf",
+    "fileSize": 2100000,
+    "fileType": "application/pdf",
+    "url": "#",
+    "uploadDate": "2024-02-10T16:45:00Z",
+    "isPublic": true
+  },
+  {
+    "id": "5",
+    "title": "Preventive Maintenance Checklist",
+    "category": "maintenance",
+    "subcategory": "Schedules",
+    "description": "Comprehensive preventive maintenance schedules for all HVAC equipment",
+    "fileName": "maintenance-checklist.pdf",
+    "fileSize": 950000,
+    "fileType": "application/pdf",
+    "url": "#",
+    "uploadDate": "2024-02-15T11:20:00Z",
+    "isPublic": true
+  },
+  {
+    "id": "6",
+    "title": "HVAC Safety Procedures Manual",
+    "category": "safety",
+    "subcategory": "General Safety",
+    "description": "Essential safety procedures and protocols for HVAC technicians",
+    "fileName": "hvac-safety-manual.pdf",
+    "fileSize": 1650000,
+    "fileType": "application/pdf",
+    "url": "#",
+    "uploadDate": "2024-02-20T13:10:00Z",
+    "isPublic": true
+  }
+]

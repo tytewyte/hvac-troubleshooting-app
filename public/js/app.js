@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load Knowledge Base
   async function loadKnowledgeBase() {
     try {
-      const response = await fetch('/api/knowledge');
+      const response = await fetch('/.netlify/functions/knowledge-base');
       if (response.ok) {
         const data = await response.json();
         displayKnowledgeCategories(data.categories);
@@ -686,24 +686,46 @@ document.addEventListener('DOMContentLoaded', () => {
     categoryFilter.addEventListener('change', displayManuals);
   }
 
-  function displayManuals() {
+  async function displayManuals() {
     const search = manualSearch ? manualSearch.value : '';
     const category = categoryFilter ? categoryFilter.value : '';
-    const manuals = manualStorage.getManuals(category, search);
-    const isGridView = manualsContainer.classList.contains('manuals-grid');
+    
+    // Load sample manuals if no manuals exist
+    let manuals = manualStorage ? manualStorage.getManuals(category, search) : [];
     
     if (manuals.length === 0) {
-      manualsContainer.style.display = 'none';
-      noManualsDiv.classList.remove('hidden');
+      try {
+        const response = await fetch('/sample-manuals.json');
+        if (response.ok) {
+          const sampleManuals = await response.json();
+          manuals = sampleManuals.filter(manual => {
+            const matchesCategory = !category || manual.category === category;
+            const matchesSearch = !search || 
+              manual.title.toLowerCase().includes(search.toLowerCase()) ||
+              manual.description.toLowerCase().includes(search.toLowerCase());
+            return matchesCategory && matchesSearch;
+          });
+        }
+      } catch (error) {
+        console.error('Error loading sample manuals:', error);
+      }
+    }
+    
+    const isGridView = manualsContainer && manualsContainer.classList.contains('manuals-grid');
+    
+    if (manuals.length === 0) {
+      if (manualsContainer) manualsContainer.style.display = 'none';
+      if (noManualsDiv) noManualsDiv.classList.remove('hidden');
       return;
     }
     
-    manualsContainer.style.display = isGridView ? 'grid' : 'flex';
-    noManualsDiv.classList.add('hidden');
-    
-    manualsContainer.innerHTML = manuals.map(manual => 
-      isGridView ? createManualCard(manual) : createManualListItem(manual)
-    ).join('');
+    if (manualsContainer) {
+      manualsContainer.style.display = isGridView ? 'grid' : 'flex';
+      manualsContainer.innerHTML = manuals.map(manual => 
+        isGridView ? createManualCard(manual) : createManualListItem(manual)
+      ).join('');
+    }
+    if (noManualsDiv) noManualsDiv.classList.add('hidden');
   }
 
   function createManualCard(manual) {

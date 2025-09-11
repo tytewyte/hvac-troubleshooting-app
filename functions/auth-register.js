@@ -1,5 +1,6 @@
 // Mock user storage (in production, use a database)
-let users = []
+// Using global storage to persist across function calls
+global.users = global.users || []
 
 exports.handler = async (event, context) => {
   // Handle CORS
@@ -22,10 +23,18 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const { username, email, password } = JSON.parse(event.body)
+    const { username, email, password } = JSON.parse(event.body || '{}')
+    
+    if (!username || !email || !password) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ message: 'Missing required fields' })
+      }
+    }
 
     // Check if user already exists
-    const existingUser = users.find(u => u.email === email)
+    const existingUser = global.users.find(u => u.email === email)
     if (existingUser) {
       return {
         statusCode: 400,
@@ -43,7 +52,7 @@ exports.handler = async (event, context) => {
       troubleshootingHistory: []
     }
 
-    users.push(user)
+    global.users.push(user)
 
     // Generate mock token
     const token = `token_${user.id}_${Date.now()}`
