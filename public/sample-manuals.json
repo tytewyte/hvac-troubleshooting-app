@@ -1,6 +1,32 @@
 [
   {
     "id": "1",
+    "title": "Comprehensive HVAC Service Manual",
+    "category": "technical-guides",
+    "subcategory": "Complete Guide",
+    "description": "Mastering HVAC Repair: A comprehensive step-by-step course covering all aspects of HVAC systems",
+    "fileName": "comprehensive-hvac-service-manual.txt",
+    "fileSize": 43722,
+    "fileType": "text/plain",
+    "url": "/manuals/comprehensive-hvac-service-manual.txt",
+    "uploadDate": "2024-12-11T04:32:00Z",
+    "isPublic": true
+  },
+  {
+    "id": "2",
+    "title": "DIY HVAC Troubleshooting Guide",
+    "category": "maintenance",
+    "subcategory": "Troubleshooting",
+    "description": "Step-by-step DIY troubleshooting guide for common HVAC issues with safety protocols",
+    "fileName": "diy-hvac-troubleshooting-guide.md",
+    "fileSize": 2037,
+    "fileType": "text/markdown",
+    "url": "/manuals/diy-hvac-troubleshooting-guide.md",
+    "uploadDate": "2024-12-11T04:32:00Z",
+    "isPublic": true
+  },
+  {
+    "id": "3",
     "title": "Carrier Furnace Installation Manual",
     "category": "equipment-manuals",
     "subcategory": "Furnaces",
@@ -13,7 +39,7 @@
     "isPublic": true
   },
   {
-    "id": "2",
+    "id": "4",
     "title": "Trane Heat Pump Service Guide",
     "category": "equipment-manuals",
     "subcategory": "Heat Pumps",
@@ -26,7 +52,7 @@
     "isPublic": true
   },
   {
-    "id": "3",
+    "id": "5",
     "title": "HVAC Electrical Troubleshooting Guide",
     "category": "technical-guides",
     "subcategory": "Electrical",
@@ -39,7 +65,7 @@
     "isPublic": true
   },
   {
-    "id": "4",
+    "id": "6",
     "title": "Refrigeration Cycle Fundamentals",
     "category": "technical-guides",
     "subcategory": "Refrigeration",
@@ -52,7 +78,7 @@
     "isPublic": true
   },
   {
-    "id": "5",
+    "id": "7",
     "title": "Preventive Maintenance Checklist",
     "category": "maintenance",
     "subcategory": "Schedules",
@@ -65,7 +91,7 @@
     "isPublic": true
   },
   {
-    "id": "6",
+    "id": "8",
     "title": "HVAC Safety Procedures Manual",
     "category": "safety",
     "subcategory": "General Safety",
