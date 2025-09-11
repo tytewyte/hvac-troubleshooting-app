@@ -209,22 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
     categoryFilter.addEventListener('change', displayManuals);
   }
 
-  // Load Knowledge Base
-  async function loadKnowledgeBase() {
-    try {
-      const response = await fetch('/.netlify/functions/knowledge-base');
-      if (response.ok) {
-        const data = await response.json();
-        displayKnowledgeCategories(data.categories);
-      } else {
-        console.error('Failed to load knowledge base');
-        displayKnowledgeCategories([]);
-      }
-    } catch (error) {
-      console.error('Error loading knowledge base:', error);
-      displayKnowledgeCategories([]);
-    }
-  }
 
   function displayKnowledgeCategories(categories) {
     const knowledgeGrid = document.querySelector('.knowledge-grid');
@@ -237,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
       categoryCard.className = 'category-card';
       categoryCard.innerHTML = `
         <div class="category-icon">
-          <i class="fas ${category.icon || 'fa-cog'}"></i>
+          <i class="fas ${getCategoryIcon(category.name)}"></i>
         </div>
         <h3>${category.name}</h3>
         <p>${category.procedures ? category.procedures.length + ' procedures' : ''}</p>
