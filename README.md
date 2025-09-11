@@ -59,7 +59,77 @@ See [GitHub Setup Scripts Guide](GITHUB_SETUP_SCRIPTS.md) for usage instructions
 
 ## Safety Notice
 
-This application is designed to provide guidance for HVAC troubleshooting. Always prioritize safety and consult with a certified HVAC professional for serious issues. The AI assistant is a tool to help identify problems but should not replace professional judgment.
+
+## Knowledge Base: Format & Contribution
+
+### Location
+The HVAC knowledge base is stored in `data/hvac-knowledge-base.json`.
+
+### Format
+The file is a structured JSON document with two main sections:
+
+- `safety-protocols`: Contains safety categories (e.g., electrical, gas, refrigerant, general) with fields:
+   - `title`: Human-readable title
+   - `icon`: FontAwesome icon class
+   - `tags`: Array of tags for search/filter
+   - `difficulty`: Skill level (e.g., all, beginner, advanced)
+   - `procedures`: Array of step-by-step safety procedures
+   - `references`: Array of `{ label, url }` objects for external resources
+- `troubleshooting`: Contains troubleshooting flows (e.g., no-heat, no-cooling) with fields:
+   - `title`: Human-readable title
+   - `systemTypes`: Array of applicable system types
+   - `difficulty`: Skill level
+   - `steps`: Array of troubleshooting steps
+   - `safetyWarnings`: Array of safety warnings
+   - `tags`: Array of tags for search/filter
+
+#### Example
+```json
+{
+   "safety-protocols": {
+      "electrical-safety": {
+         "title": "Electrical Safety Procedures",
+         "icon": "fas fa-bolt",
+         "tags": ["safety", "electrical"],
+         "difficulty": "all",
+         "procedures": ["ALWAYS turn off power at the main breaker before electrical work"],
+         "references": [{ "label": "OSHA Electrical Safety", "url": "https://www.osha.gov/electrical" }]
+      }
+   },
+   "troubleshooting": {
+      "no-heat": {
+         "title": "No Heat",
+         "systemTypes": ["Furnace", "Heat Pump", "Boiler"],
+         "difficulty": "beginner",
+         "steps": ["Check thermostat settings"],
+         "safetyWarnings": ["Turn off power before inspecting internal components"],
+         "tags": ["heating", "troubleshooting"]
+      }
+   }
+}
+```
+
+### How to Add or Edit Knowledge Entries
+
+1. **Open** `data/hvac-knowledge-base.json` in your editor.
+2. **To add a new safety protocol:**
+    - Add a new key under `safety-protocols` with the structure above.
+3. **To add a new troubleshooting flow:**
+    - Add a new key under `troubleshooting` with the structure above.
+4. **To edit an entry:**
+    - Update the relevant fields (title, steps, procedures, etc.).
+5. **Validate** your JSON (use an online validator or your editor's linter) to avoid syntax errors.
+6. **Test** your changes by running the app and checking the knowledge base UI and search.
+
+### Contribution Guidelines
+
+- Use clear, concise language for steps and procedures.
+- Always include safety warnings where appropriate.
+- Add references to reputable sources when possible.
+- Use tags to improve searchability.
+- Submit a pull request with a summary of your changes.
+
+For questions or suggestions, open an issue or contact the maintainers.
 
 ## License
 

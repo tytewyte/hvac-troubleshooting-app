@@ -1,3 +1,5 @@
+
+
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
@@ -21,6 +23,183 @@ const auth = (req, res, next) => {
     res.status(401).json({ message: 'Token is not valid' });
   }
 };
+
+// File upload dependencies
+const multer = require('multer');
+const uploadDir = path.join(__dirname, '..', 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => {
+    const unique = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, unique + '-' + file.originalname.replace(/[^a-zA-Z0-9.\-_]/g, '_'));
+  }
+});
+const upload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  fileFilter: (req, file, cb) => {
+    const allowed = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+    if (allowed.includes(file.mimetype)) cb(null, true);
+    else cb(new Error('Invalid file type'));
+  }
+});
+
+// List manuals endpoint
+router.get('/list-manuals', auth, (req, res) => {
+  try {
+    const manuals = fs.readdirSync(uploadDir)
+      .filter(file => file.toLowerCase().endsWith('.pdf'))
+      .map(fileName => {
+        const filePath = path.join(uploadDir, fileName);
+        const stats = fs.statSync(filePath);
+        return {
+          filename: fileName,
+          size: stats.size,
+          uploadDate: stats.mtime.toISOString(),
+          title: fileName.replace(/\.[^/.]+$/, "").replace(/-/g, " ")
+        };
+      });
+    res.json(manuals);
+  } catch (err) {
+    console.error('Error listing manuals:', err);
+    res.status(500).json({ message: 'Error listing manuals', error: err.message });
+  }
+});
+
+// Upload manual endpoint
+router.post('/upload-manual', auth, upload.single('file'), (req, res) => {
+  try {
+    const { title, category, subcategory, description, isPublic } = req.body;
+    if (!title || !category || !req.file) {
+      return res.status(400).json({ message: 'Missing required fields or file.' });
+    }
+    // Save manual metadata (could be extended to a DB)
+    const manual = {
+      title,
+      category,
+      subcategory: subcategory || '',
+      description: description || '',
+      isPublic: isPublic === 'on' || isPublic === true,
+      fileName: req.file.filename,
+      originalName: req.file.originalname,
+      fileSize: req.file.size,
+      fileType: req.file.mimetype,
+      uploadDate: new Date().toISOString(),
+      url: '/uploads/' + req.file.filename
+    };
+    // Optionally, save to a JSON file or DB here
+    res.status(201).json({ message: 'Manual uploaded successfully!', manual });
+  } catch (err) {
+    res.status(500).json({ message: 'Upload failed', error: err.message });
+  }
+});
+// Simple admin check middleware (replace with real role check in production)
+function adminOnly(req, res, next) {
+  // Example: check for admin flag in JWT payload
+  if (req.user && req.user.isAdmin) {
+    return next();
+  }
+  return res.status(403).json({ message: 'Admin access required' });
+}
+
+// Simple input sanitization utility
+function sanitizeInput(obj) {
+  if (typeof obj === 'string') {
+    return obj.replace(/[<>"'`;]/g, '');
+  } else if (Array.isArray(obj)) {
+    return obj.map(sanitizeInput);
+  } else if (typeof obj === 'object' && obj !== null) {
+    const clean = {};
+    for (const k in obj) {
+      clean[k] = sanitizeInput(obj[k]);
+    }
+    return clean;
+  }
+  return obj;
+}
+
+// Enable editing for user 'tytewyte' only
+router.post('/edit-knowledge', auth, (req, res) => {
+  try {
+    // Only allow user 'tytewyte' (from JWT payload)
+    if (!req.user || req.user.username !== 'tytewyte') {
+      return res.status(403).json({ message: 'Edit access denied' });
+    }
+    const sanitized = sanitizeInput(req.body);
+    const kbPath = path.join(__dirname, '..', 'data', 'hvac-knowledge-base.json');
+    let kbRaw = fs.readFileSync(kbPath, 'utf-8');
+    let kb = JSON.parse(kbRaw);
+    // Accept full replacement or partial update (merge)
+    if (sanitized.fullReplace) {
+      kb = sanitized.data;
+    } else {
+      // Merge: shallow merge top-level keys
+      for (const k in sanitized.data) {
+        kb[k] = sanitized.data[k];
+      }
+    }
+    fs.writeFileSync(kbPath, JSON.stringify(kb, null, 2));
+    res.json({ message: 'Knowledge base updated successfully.' });
+  } catch (err) {
+    res.status(400).json({ message: 'Invalid input', error: err.message });
+  }
+});
+// Get troubleshooting flows from knowledge base
+router.get('/troubleshooting-flows', auth, (req, res) => {
+  try {
+    const kbPath = path.join(__dirname, '..', 'data', 'hvac-knowledge-base.json');
+    const kbRaw = fs.readFileSync(kbPath, 'utf-8');
+    const kb = JSON.parse(kbRaw);
+    const flows = kb.troubleshooting ? Object.values(kb.troubleshooting) : [];
+    res.json({ flows });
+  } catch (err) {
+    console.error('Error loading troubleshooting flows:', err);
+    res.status(500).json({ message: 'Error loading troubleshooting flows', error: err.message });
+  }
+});
+
+// Search knowledge base (categories, procedures, troubleshooting, etc.)
+router.get('/search', auth, (req, res) => {
+  const q = (req.query.q || '').toLowerCase();
+  if (!q) return res.json({ results: [] });
+  try {
+    const kbPath = path.join(__dirname, '..', 'data', 'hvac-knowledge-base.json');
+    const kbRaw = fs.readFileSync(kbPath, 'utf-8');
+    const kb = JSON.parse(kbRaw);
+    let results = [];
+    // Search safety protocols
+    if (kb['safety-protocols']) {
+      for (const [key, section] of Object.entries(kb['safety-protocols'])) {
+        if (
+          (section.title && section.title.toLowerCase().includes(q)) ||
+          (section.procedures && section.procedures.some(p => p.toLowerCase().includes(q))) ||
+          (section.tags && section.tags.some(tag => tag.toLowerCase().includes(q)))
+        ) {
+          results.push({ type: 'safety', key, ...section });
+        }
+      }
+    }
+    // Search troubleshooting flows
+    if (kb.troubleshooting) {
+      for (const [key, flow] of Object.entries(kb.troubleshooting)) {
+        if (
+          (flow.title && flow.title.toLowerCase().includes(q)) ||
+          (flow.steps && flow.steps.some(s => s.toLowerCase().includes(q))) ||
+          (flow.tags && flow.tags.some(tag => tag.toLowerCase().includes(q)))
+        ) {
+          results.push({ type: 'troubleshooting', key, ...flow });
+        }
+      }
+    }
+    res.json({ results });
+  } catch (err) {
+    console.error('Error searching knowledge base:', err);
+    res.status(500).json({ message: 'Error searching knowledge base', error: err.message });
+  }
+});
 
 // LM Studio API configuration
 const LM_STUDIO_API_URL = process.env.LM_STUDIO_API_URL || 'http://localhost:1234/v1';
@@ -98,42 +277,23 @@ Provide step-by-step diagnostic procedures when safe to do so, and explain poten
 });
 
 // Get HVAC knowledge base categories
-router.get('/knowledge', auth, (req, res) => {
-  // This would typically come from a database
-  const categories = [
-    {
-      id: 'professional',
-      name: 'Professional HVAC Knowledge',
-      subcategories: ['Air Handler Wiring & Components', 'Condenser Wiring & Components', 'Advanced Diagnostics']
-    },
-    {
-      id: 'heating',
-      name: 'Heating Systems',
-      subcategories: ['Furnaces', 'Heat Pumps', 'Boilers', 'Radiators']
-    },
-    {
-      id: 'cooling',
-      name: 'Cooling Systems',
-      subcategories: ['Central Air', 'Ductless Mini-Splits', 'Window Units', 'Evaporative Coolers']
-    },
-    {
-      id: 'ventilation',
-      name: 'Ventilation',
-      subcategories: ['Ductwork', 'Air Handlers', 'ERVs/HRVs', 'Exhaust Systems']
-    },
-    {
-      id: 'controls',
-      name: 'Controls & Thermostats',
-      subcategories: ['Smart Thermostats', 'Programmable Thermostats', 'Zoning Systems']
-    },
-    {
-      id: 'maintenance',
-      name: 'Maintenance',
-      subcategories: ['Filter Replacement', 'Seasonal Maintenance', 'Efficiency Tips']
-    }
-  ];
-  
-  res.json({ categories });
+router.get('/knowledge', (req, res) => {
+  try {
+    const kbPath = path.join(__dirname, '..', 'data', 'hvac-knowledge-base.json');
+    const kbRaw = fs.readFileSync(kbPath, 'utf-8');
+    const kb = JSON.parse(kbRaw);
+    // For now, return the top-level keys as categories
+    const categories = Object.keys(kb).map(key => ({
+      id: key,
+      name: kb[key].title || key,
+      icon: kb[key].icon || '',
+      procedures: kb[key].procedures || [],
+    }));
+    res.json({ categories });
+  } catch (err) {
+    console.error('Error loading knowledge base:', err);
+    res.status(500).json({ message: 'Error loading knowledge base', error: err.message });
+  }
 });
 
 // Get common troubleshooting flows

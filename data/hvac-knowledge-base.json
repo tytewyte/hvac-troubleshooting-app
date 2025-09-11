@@ -1,0 +1,137 @@
+{
+  "safety-protocols": {
+    "title": "Safety Protocols",
+    "icon": "fas fa-shield-alt",
+    "electrical-safety": {
+      "title": "Electrical Safety Procedures",
+      "icon": "fas fa-bolt",
+      "tags": ["safety", "electrical"],
+      "difficulty": "all",
+      "procedures": [
+        "ALWAYS turn off power at the main breaker before electrical work",
+        "Use lockout/tagout (LOTO) procedures to prevent accidental energization",
+        "Test circuits with a multimeter to verify power is off",
+        "Wear appropriate PPE: safety glasses, insulated gloves, non-conductive footwear",
+        "Never work on electrical components in wet conditions",
+        "Use insulated tools rated for electrical work",
+        "Be aware of capacitors that may retain charge even when power is off",
+        "If unsure about electrical safety, contact a licensed electrician"
+      ],
+      "references": [
+        { "label": "OSHA Electrical Safety", "url": "https://www.osha.gov/electrical" }
+      ]
+    },
+    "gas-safety": {
+      "title": "Gas Safety Protocols",
+      "icon": "fas fa-fire",
+      "tags": ["safety", "gas"],
+      "difficulty": "all",
+      "procedures": [
+        "If you smell gas, evacuate immediately and call the gas company",
+        "Never use open flames or create sparks near gas appliances",
+        "Ensure adequate ventilation when working on gas systems",
+        "Check for gas leaks using soap solution, never use a flame",
+        "Turn off gas supply at the meter if major leak is suspected",
+        "Only qualified technicians should work on gas connections",
+        "Install and maintain carbon monoxide detectors",
+        "Never bypass or disable safety controls on gas appliances"
+      ],
+      "references": [
+        { "label": "National Gas Safety", "url": "https://www.cpsc.gov/Safety-Education/Safety-Guides/Home/Natural-Gas-Safety" }
+      ]
+    },
+    "refrigerant-safety": {
+      "title": "Refrigerant Handling Safety",
+      "icon": "fas fa-snowflake",
+      "tags": ["safety", "refrigerant"],
+      "difficulty": "all",
+      "procedures": [
+        "Only EPA-certified technicians should handle refrigerants",
+        "Wear safety glasses and gloves when working with refrigerants",
+        "Ensure adequate ventilation to prevent refrigerant accumulation",
+        "Never vent refrigerants to atmosphere - illegal and harmful",
+        "Use proper recovery equipment for refrigerant removal",
+        "Store refrigerants in approved containers in cool, dry areas",
+        "Be aware that refrigerants can displace oxygen in confined spaces",
+        "Follow EPA regulations for refrigerant handling and disposal"
+      ],
+      "references": [
+        { "label": "EPA Refrigerant Handling", "url": "https://www.epa.gov/section608" }
+      ]
+    },
+    "general-safety": {
+      "title": "General HVAC Safety",
+      "icon": "fas fa-shield-alt",
+      "tags": ["safety", "general"],
+      "difficulty": "all",
+      "procedures": [
+        "Always wear appropriate PPE: safety glasses, work gloves, steel-toed boots",
+        "Use proper ladder safety - maintain 3-point contact, check stability",
+        "Keep work area clean and free of tripping hazards",
+        "Use proper lifting techniques to prevent back injury",
+        "Be aware of sharp edges on ductwork and equipment",
+        "Never work alone on complex or dangerous procedures",
+        "Have emergency contact numbers readily available",
+        "Know the location of emergency shutoffs for gas, water, and electricity"
+      ],
+      "references": []
+    }
+  },
+  "troubleshooting": {
+    "title": "Troubleshooting",
+    "icon": "fas fa-tools",
+    "no-heat": {
+      "title": "No Heat",
+      "systemTypes": ["Furnace", "Heat Pump", "Boiler"],
+      "difficulty": "beginner",
+      "steps": [
+        "Check thermostat settings",
+        "Check circuit breakers",
+        "Check fuel supply",
+        "Check filter",
+        "Check pilot light or ignition (if applicable)"
+      ],
+      "safetyWarnings": [
+        "Turn off power before inspecting internal components",
+        "Do not attempt to repair gas components",
+        "If you smell gas, leave immediately and call your gas company"
+      ],
+      "tags": ["heating", "troubleshooting"]
+    },
+    "no-cooling": {
+      "title": "No Cooling",
+      "systemTypes": ["Central AC", "Heat Pump", "Mini-Split"],
+      "difficulty": "beginner",
+      "steps": [
+        "Check thermostat settings",
+        "Check circuit breakers",
+        "Check outdoor unit power",
+        "Check filter",
+        "Check for ice on refrigerant lines"
+      ],
+      "safetyWarnings": [
+        "Turn off power before inspecting components",
+        "Do not attempt to repair refrigerant lines",
+        "Keep debris clear from outdoor unit"
+      ],
+      "tags": ["cooling", "troubleshooting"]
+    },
+    "poor-airflow": {
+      "title": "Poor Airflow",
+      "systemTypes": ["All"],
+      "difficulty": "beginner",
+      "steps": [
+        "Check and replace air filters",
+        "Check for closed or blocked vents",
+        "Check for duct obstructions",
+        "Inspect blower motor and fan"
+      ],
+      "safetyWarnings": [
+        "Turn off system before inspecting internal components",
+        "Be cautious of sharp edges in ductwork",
+        "Do not remove permanent duct components without professional help"
+      ],
+      "tags": ["airflow", "troubleshooting"]
+    }
+  }
+}

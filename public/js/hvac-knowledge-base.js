@@ -1,7 +1,7 @@
 // Expanded HVAC Knowledge Base
 // Enhanced with comprehensive safety protocols and educational content
 
-const HVACKnowledgeBase = {
+window.hvacKnowledgeBase = {
     // Universal Safety Protocols - Applied to all system types
     'safety-protocols': {
         'electrical-safety': {
@@ -2103,10 +2103,3 @@ const HVACKnowledgeBase = {
         }
     }
 };
-
-// Export for use in main application
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = HVACKnowledgeBase;
-} else if (typeof window !== 'undefined') {
-    window.HVACKnowledgeBase = HVACKnowledgeBase;
-}

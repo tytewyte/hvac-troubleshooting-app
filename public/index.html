@@ -69,12 +69,7 @@
       <!-- Knowledge Base Page -->
       <section id="knowledge-base-page" class="page">
         <h2>HVAC Knowledge Base</h2>
-        <div class="kb-categories">
-          <!-- Categories will be loaded dynamically -->
-        </div>
-        <div class="kb-content">
-          <p>Select a category to view information.</p>
-        </div>
+  <div class="knowledge-grid"></div>
       </section>
 
       <!-- Troubleshooting Page -->
@@ -154,6 +149,42 @@
         <h2>HVAC Reference Library</h2>
         <p class="library-description">Access comprehensive HVAC manuals, technical guides, and maintenance resources.</p>
         
+        <!-- Uploaded Manuals Section -->
+        <div class="uploaded-manuals-section">
+          <h3>Uploaded Manuals</h3>
+          <div class="manual-management-controls">
+            <div class="search-controls">
+              <input type="text" id="manual-search" placeholder="Search manuals...">
+              <select id="category-filter">
+                <option value="">All Categories</option>
+                <option value="equipment-manuals">Equipment Manuals</option>
+                <option value="technical-guides">Technical Guides</option>
+                <option value="maintenance">Maintenance Resources</option>
+                <option value="safety">Safety Documents</option>
+                <option value="codes-standards">Codes & Standards</option>
+              </select>
+            </div>
+            <div class="view-controls">
+              <button id="grid-view" class="btn btn-small active">
+                <i class="fas fa-th"></i>
+              </button>
+              <button id="list-view" class="btn btn-small">
+                <i class="fas fa-list"></i>
+              </button>
+            </div>
+          </div>
+          <div id="manuals-container" class="manuals-grid">
+            <!-- Uploaded manuals will be displayed here -->
+          </div>
+          <div id="no-manuals" class="no-content">
+            <i class="fas fa-folder-open"></i>
+            <p>No manuals uploaded yet</p>
+            <button class="btn btn-primary" onclick="document.getElementById('upload-modal').style.display = 'block'">
+              Upload Your First Manual
+            </button>
+          </div>
+        </div>
+
         <div class="reference-categories">
           <div class="reference-category">
             <div class="category-header">

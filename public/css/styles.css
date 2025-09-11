@@ -505,6 +505,21 @@ footer {
   font-size: 1.1rem;
 }
 
+.uploaded-manuals-section {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 40px;
+  box-shadow: var(--shadow);
+}
+
+.uploaded-manuals-section h3 {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
 .reference-categories {
   max-width: 1200px;
   margin: 0 auto;

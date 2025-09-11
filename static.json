@@ -1,0 +1,22 @@
+{
+  "root": "public/",
+  "clean_urls": true,
+  "routes": {
+    "/**": "index.html"
+  },
+  "headers": {
+    "/**": {
+      "Cache-Control": "public, max-age=0, must-revalidate"
+    }
+  },
+  "https_only": true,
+  "redirects": [
+    { "source": "/app/*", "destination": "/app/" },
+    { "source": "/dashboard/*", "destination": "/dashboard/" },
+    { "source": "/api/*", "destination": "/.netlify/functions/server/api/:splat" }
+  ],
+  "build": {
+    "command": "npm run build",
+    "publish": "build"
+  }
+}

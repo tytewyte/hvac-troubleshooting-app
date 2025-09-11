@@ -7,11 +7,13 @@ This guide will help you systematically extract procedures from your PDF and int
 ### 1. Knowledge Base Structure
 
 The knowledge base is organized as:
-```
+
+```text
 System Type → Problem Category → Steps/Diagnoses
 ```
 
 **System Types:**
+
 - `central-air` - Central air conditioning
 - `heat-pump` - Heat pump systems  
 - `furnace` - Gas/oil furnaces
@@ -20,6 +22,7 @@ System Type → Problem Category → Steps/Diagnoses
 - `mini-split` - Ductless mini-split systems
 
 **Problem Categories:**
+
 - `cooling` - AC and cooling issues
 - `heating` - Heating problems
 - `airflow` - Ventilation and airflow
@@ -67,11 +70,13 @@ Each diagnosis includes:
 ### 4. PDF Extraction Process
 
 #### Step 1: Identify Procedures by System Type
+
 1. Open your PDF and locate sections for each HVAC system type
 2. Look for troubleshooting flowcharts or step-by-step procedures
 3. Note any safety warnings or critical checks
 
 #### Step 2: Extract Diagnostic Steps
+
 For each procedure in the PDF:
 
 1. **Safety Checks** - Always include as first step
@@ -95,6 +100,7 @@ For each procedure in the PDF:
    - Airflow testing
 
 #### Step 3: Create Diagnosis Logic
+
 For each problem identified in the PDF:
 
 1. **Identify Symptoms** - What user responses indicate this problem?
@@ -107,6 +113,7 @@ For each problem identified in the PDF:
 Here's how to add a new procedure from your PDF:
 
 #### From PDF: "Furnace Won't Ignite"
+
 ```javascript
 // Add to furnace → heating → steps
 {
@@ -145,17 +152,20 @@ Here's how to add a new procedure from your PDF:
 
 Focus on these high-impact areas from your PDF:
 
-#### High Priority:
+#### High Priority
+
 1. **Safety procedures** - Gas leaks, electrical hazards, carbon monoxide
 2. **Common problems** - Filter issues, thermostat problems, basic maintenance
 3. **Diagnostic flowcharts** - Step-by-step troubleshooting sequences
 
-#### Medium Priority:
+#### Medium Priority
+
 1. **Seasonal maintenance** - Pre-season checkups, winterization
 2. **Performance optimization** - Efficiency improvements, system tuning
 3. **Component replacement** - When and how to replace common parts
 
-#### Lower Priority:
+#### Lower Priority
+
 1. **Advanced diagnostics** - Refrigerant charging, complex electrical
 2. **Installation procedures** - New system installation
 3. **Code compliance** - Building codes and regulations
@@ -172,7 +182,7 @@ After adding new knowledge:
 ### 8. File Locations
 
 - **Main knowledge base**: `hvac-knowledge-base.js`
-- **Application logic**: `hvac-agent.js` 
+- **Application logic**: `hvac-agent.js`
 - **User interface**: `hvac-agent.html`
 - **Styling**: `hvac-styles.css`
 

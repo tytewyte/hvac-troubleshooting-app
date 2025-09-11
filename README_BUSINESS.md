@@ -7,12 +7,14 @@ This HVAC AI Agent is now enterprise-ready with comprehensive business features 
 ## 🎯 Value Proposition
 
 ### For HVAC Technicians
+
 - **Reduce diagnostic time** by 40-60% with AI-powered troubleshooting
 - **Improve first-call resolution** rates with systematic guidance
 - **Access 24/7 knowledge base** covering 100+ common HVAC issues
 - **Enhance customer satisfaction** with faster, more accurate service
 
 ### For Homeowners
+
 - **Immediate troubleshooting guidance** without waiting for service calls
 - **Safety-first approach** with clear professional referral triggers
 - **Cost savings** through DIY resolution of simple issues
@@ -21,7 +23,8 @@ This HVAC AI Agent is now enterprise-ready with comprehensive business features 
 ## 💰 Pricing Models
 
 ### 1. Subscription Tiers
-```
+
+```text
 Basic Plan - $29/month
 - 50 troubleshooting sessions
 - Basic HVAC knowledge base
@@ -41,14 +44,16 @@ Enterprise Plan - $199/month
 ```
 
 ### 2. Pay-Per-Use
-```
+
+```text
 $2.99 per troubleshooting session
 $0.99 per quick diagnostic
 Volume discounts for 10+ sessions
 ```
 
 ### 3. White-Label Licensing
-```
+
+```text
 $500/month base license
 $5 per active user/month
 Custom branding and domain
@@ -58,6 +63,7 @@ Revenue sharing options
 ## 🚀 Deployment Architecture
 
 ### Production Environment
+
 ```bash
 # Environment setup
 ENVIRONMENT=production
@@ -69,6 +75,7 @@ MAX_CONCURRENT_REQUESTS=50
 ```
 
 ### Scaling Considerations
+
 - **Local deployment** eliminates API costs and latency
 - **Horizontal scaling** with multiple Ollama instances
 - **Load balancing** for high-traffic scenarios
@@ -77,6 +84,7 @@ MAX_CONCURRENT_REQUESTS=50
 ## 📊 Business Intelligence
 
 ### Key Metrics to Track
+
 1. **Usage Analytics**
    - Daily/monthly active users
    - Session duration and completion rates
@@ -96,6 +104,7 @@ MAX_CONCURRENT_REQUESTS=50
    - Support ticket volume
 
 ### Analytics Dashboard
+
 ```python
 from logging_system import get_usage_stats
 
@@ -109,6 +118,7 @@ print(f"Avg response time: {stats['avg_processing_time']:.2f}s")
 ## 🎯 Marketing Strategy
 
 ### Target Markets
+
 1. **HVAC Service Companies** (Primary)
    - 50,000+ companies in US market
    - Average 10-50 technicians per company
@@ -123,6 +133,7 @@ print(f"Avg response time: {stats['avg_processing_time']:.2f}s")
    - Growing DIY market trend
 
 ### Marketing Channels
+
 - **Industry trade shows** (AHR Expo, HVACR Expo)
 - **Digital marketing** (Google Ads, LinkedIn targeting)
 - **Partnership programs** with HVAC distributors
@@ -131,6 +142,7 @@ print(f"Avg response time: {stats['avg_processing_time']:.2f}s")
 ## 🤝 Partnership Opportunities
 
 ### Revenue Sharing Models
+
 1. **HVAC Distributors**
    - White-label the solution
    - 30% revenue share
@@ -149,12 +161,14 @@ print(f"Avg response time: {stats['avg_processing_time']:.2f}s")
 ## 🛡️ Compliance & Safety
 
 ### Safety Standards
+
 - **NATE certification** alignment for troubleshooting procedures
 - **EPA guidelines** compliance for refrigerant handling
 - **OSHA safety** protocols integration
 - **Local code** awareness and referrals
 
 ### Data Privacy
+
 - **Local processing** - no data leaves customer premises
 - **GDPR compliance** for international markets
 - **SOC 2 Type II** certification path
@@ -163,18 +177,21 @@ print(f"Avg response time: {stats['avg_processing_time']:.2f}s")
 ## 📈 Growth Roadmap
 
 ### Phase 1: Market Entry (Months 1-6)
+
 - Launch with 3 pilot HVAC companies
 - Refine product based on feedback
 - Develop case studies and testimonials
 - Build initial marketing materials
 
 ### Phase 2: Scale (Months 7-18)
+
 - Expand to 50+ customers
 - Develop partner channel program
 - Add advanced features (equipment integration)
 - International market research
 
 ### Phase 3: Market Leadership (Months 19-36)
+
 - 500+ customer milestone
 - Industry conference speaking opportunities
 - Acquisition or IPO preparation
@@ -203,6 +220,7 @@ print(f"Avg response time: {stats['avg_processing_time']:.2f}s")
 ## 📞 Support & Implementation
 
 ### Customer Onboarding
+
 1. **Technical Setup** (1-2 hours)
    - Ollama installation and configuration
    - Model deployment and testing
@@ -220,6 +238,7 @@ print(f"Avg response time: {stats['avg_processing_time']:.2f}s")
    - Performance optimization
 
 ### Success Metrics
+
 - **95%+ uptime** SLA guarantee
 - **<2 second** average response time
 - **90%+ customer satisfaction** rating

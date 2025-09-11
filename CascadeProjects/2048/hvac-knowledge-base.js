@@ -1927,7 +1927,7 @@ const HVACKnowledgeBase = {
                     description: 'Heat exchanger integrity is critical for safe operation and carbon monoxide prevention.',
                     steps: [
                         'IMMEDIATELY shut down furnace if cracks are visible',
-                        'Do not operate furnace with damaged heat exchanger',
+                        'Do not operate the furnace if cracks are found',
                         'Schedule immediate professional inspection',
                         'Consider carbon monoxide testing',
                         'Heat exchanger replacement may be required',
