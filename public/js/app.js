@@ -396,7 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '</div>';
       
       try {
-        const response = await fetch('/api/troubleshoot', {
+        const response = await fetch('/.netlify/functions/troubleshoot', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

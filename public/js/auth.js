@@ -137,7 +137,7 @@ loginForm.addEventListener('submit', async (e) => {
   const password = document.getElementById('login-password').value;
   
   try {
-    const response = await fetch('/auth/login', {
+    const response = await fetch('/.netlify/functions/auth-login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -194,7 +194,7 @@ registerForm.addEventListener('submit', async (e) => {
   }
   
   try {
-    const response = await fetch('/auth/register', {
+    const response = await fetch('/.netlify/functions/auth-register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
