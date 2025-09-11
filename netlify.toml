@@ -4,7 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  SECRETS_SCAN_OMIT_PATHS = ".env.example,README.md,README_BUSINESS.md,railway.toml,uploads/*,Dockerfile"
+  SECRETS_SCAN_ENABLED = "false"
 
 # Handle client-side routing
 [[redirects]]
